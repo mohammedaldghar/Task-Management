@@ -12,6 +12,7 @@ import {useRouter,useRoute} from "vue-router"
     description:"",
   });
   const taskId = route.params.id;
+  const requiredTitle=ref(false);
 
 // Functions
   const getTaskIfExist=()=>{
@@ -25,14 +26,14 @@ import {useRouter,useRoute} from "vue-router"
     TaskServices.addNewTask(task.value).then((res)=>{
       router.push('/');
     }).catch((err)=>{
-
+      requiredTitle.value=true;
     })
   }
   const editTask=()=>{
     TaskServices.editTask(task.value).then((res)=>{
       router.push('/');
     }).catch((err)=>{
-
+      requiredTitle.value=true;
     })
   }
 
@@ -51,6 +52,7 @@ import {useRouter,useRoute} from "vue-router"
       <div class="row mt-3">
          <label for="title" class="mt-2">Title</label>
          <input type="Text" id="title" name="title" class="border-top-0 border-start-0 border-end-0 mb-3   input-background" placeholder="Task Title" v-model="task.title">
+        <p v-if="task.title.length===0 && requiredTitle" class="text-danger">Title is required</p>
       </div>
       <div class="row">
          <label for="description" class="mt-2">Description</label>
